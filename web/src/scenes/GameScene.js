@@ -36,7 +36,6 @@ export class GameScene extends Phaser.Scene {
             new Drone(this, 800, 1400),
         ];
         this.enemyShips = Array.from({ length: NUM_ENEMY_SHIPS }, () => new EnemyShip(this));
-        this.buildSpotlight();
         this.buildUI();
         this.cursors = this.input.keyboard.createCursorKeys();
         this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -89,17 +88,6 @@ export class GameScene extends Phaser.Scene {
         }
         g.closePath();
         g.fillPath();
-    }
-    // ─── spotlight RT + brush ────────────────────────────────────────────────────
-    buildSpotlight() {
-        this.spotlightRT = this.add
-            .renderTexture(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-            .setScrollFactor(0)
-            .setDepth(15);
-        // brush: white filled circle centered at (r, r) so top-left is (0,0)
-        this.spotlightBrush = this.add.graphics().setVisible(false);
-        this.spotlightBrush.fillStyle(0xffffff, 1);
-        this.spotlightBrush.fillCircle(SPOTLIGHT_RADIUS, SPOTLIGHT_RADIUS, SPOTLIGHT_RADIUS);
     }
     // ─── fixed-camera UI ────────────────────────────────────────────────────────
     buildUI() {
@@ -245,23 +233,10 @@ export class GameScene extends Phaser.Scene {
             d.draw();
         for (const s of this.enemyShips)
             s.draw();
-        this.updateSpotlight(camY);
         this.updateFlash();
         this.updateUI(progress, camY);
         this.updateRadar(progress);
         this.updateStraitMessage();
-    }
-    // ─── spotlight ───────────────────────────────────────────────────────────────
-    updateSpotlight(camY) {
-        const rt = this.spotlightRT;
-        rt.clear();
-        rt.fill(0x000000, 0.55);
-        for (const d of this.drones) {
-            const screenY = d.worldY - camY;
-            if (screenY > -SPOTLIGHT_RADIUS && screenY < SCREEN_HEIGHT + SPOTLIGHT_RADIUS) {
-                rt.erase(this.spotlightBrush, d.x - SPOTLIGHT_RADIUS, screenY - SPOTLIGHT_RADIUS);
-            }
-        }
     }
     // ─── flash overlay ───────────────────────────────────────────────────────────
     updateFlash() {
