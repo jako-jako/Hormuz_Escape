@@ -1,0 +1,19 @@
+{
+  "name": "hormuz-escape",
+  "version": "1.0.0",
+  "description": "2026年、ホルムズ海峡封鎖。タンカー船長として機雷とドローン監視網をかいくぐり海峡を突破せよ。",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "vite": "^6.4.2",
+    "@vitejs/plugin-basic-ssl": "^1.1.1"
+  }
+}
